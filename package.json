@@ -1,0 +1,12 @@
+{
+  "name": "dropdrive",
+  "description": "Projeto secreto de SD ",
+  "version": "0.1.0",
+  "author": "Alvaro Viebrantz",
+  "dependencies": {
+    "express": "~3.0.0beta7",
+    "mongoose": "~2.7.2",
+    "redis": "~0.7.2"
+  },
+  "devDependencies": {}
+}
