@@ -5,6 +5,7 @@ var express = require('./node_modules/express')
   , publishService = require('./services/filePublishService').publishService
   , searchService = require('./services/fileSearchService').searchService
   , userService = require('./services/userService').users
+  , apiEndPoint = require('./services/apiEndPoint').apiEndPoint
   , api = require('./api').api;
   
 app.use('/api', api);
@@ -41,21 +42,25 @@ app.map = function(a, route){
 
 app.map({
   '/api' :  {
-      '/auth' : {
-           get : authService.authenticate
-       },
-       '/heartbeat' : {
-           get : authService.heartbeat
-       },
-       '/publish' : {
-           get : publishService.publish
-       },
-       '/search' : {
-           get : searchService.search
-       },
-       '/users' : {
-           get : userService.online
-       }
+      get : apiEndPoint.online,      
+      '/v1' : {
+          get : apiEndPoint.v1,          
+          '/auth' : {
+               get : authService.authenticate
+           },
+           '/heartbeat' : {
+               put : authService.heartbeat
+           },
+           '/publish' : {
+               post : publishService.publish
+           },
+           '/search' : {
+               get : searchService.search
+           },
+           '/users' : {
+               get : userService.online
+           }
+     }
        
   }
 });
