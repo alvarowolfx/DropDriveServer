@@ -91,7 +91,45 @@ var filePublish = {
         }    
     });
      
+  },
+  unpublish : function(req, res){
+  
+    var md5 = req.query['md5'];
+    var deviceID = req.query['deviceID'];
+        
+    if(!deviceID || !md5 ){
+        
+        var buffer = "";
+        
+        if (!deviceID) buffer+="deviceID ";        
+        if (!md5) buffer+="md5 ";
+
+        buffer+='required';
+        
+        res.send(Common.error(400, 'Missing arguments',buffer),400);
+        return;
+    }
+    
+    SharedFile.findOne({ md5 : md5 } , function(err,doc){
+        
+        if(doc){   
+            
+           if(doc.haveFileComplete.indexOf(deviceID)){
+                doc.haveFileComplete.pop(deviceID);
+           }
+           if(doc.haveFileIncomplete.indexOf(deviceID)){
+               doc.haveFileIncomplete.pop(deviceID);
+           }
+       
+            doc.save();
+       
+            res.send(Common.response(200,'File unpublisehd with sucess',{file : doc}),200);
+            
+        }
+    });
+    
   }
+  
 };
 
 exports.publishService = filePublish;
